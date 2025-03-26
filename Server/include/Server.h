@@ -1,10 +1,11 @@
 #pragma once
 
-#include <socket.h>
-
-namespace {}
+#include <functional>
+#include <map>
+#include "Types.h"
 
 class Server {
     Server();
     ~Server();
-}
+    
+};
