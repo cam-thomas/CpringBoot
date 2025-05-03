@@ -1,5 +1,12 @@
+//Project includes
 #include <Server.h>
 
+// Standard includes
+#include <iostream>
+#include <thread>
+
+// Network includes
+#include <cstring>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -22,14 +29,18 @@ Server::Server(int portNum) : portNum(portNum), msgsock(-1), socfd(-1) {
         perror("Error opening socket");
         exit(1);
     }
-    
+    int address = 1;
+    // Set the socket to allow reuse of the address
+    setsockopt(socfd, SOL_SOCKET, SO_REUSEADDR, &address, sizeof(address));
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(portNum);
+
     if (bind(socfd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
         perror("Error on binding");
         close(socfd);
         exit(1);
     }
-    
-    listen(socfd, MAX_CONNECTIONS);
 }
 Server::~Server() {
     if (msgsock != -1) {
@@ -39,4 +50,24 @@ Server::~Server() {
         close(socfd);
     }
     delete[] buf;
+}
+
+void Server::Serve() {
+
+    if (listen(socfd, MAX_CONNECTIONS) == -1) {
+		std::cout << "Error listening to socket: " << strerror(errno) << std::endl;
+		exit(EXIT_FAILURE);
+	}
+    listen(socfd, MAX_CONNECTIONS);
+    while (true) {
+
+		int connectionfd = accept(socfd, 0, 0);
+		if (connectionfd == -1) {
+			perror("Error accepting connection");
+			continue;
+		}
+
+		std::thread connection_thread(&Server::HandleConnection, this, connectionfd);
+		connection_thread.detach();
+	}
 }

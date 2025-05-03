@@ -10,5 +10,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Create the executable from the source files
 add_library(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries()
+
 
