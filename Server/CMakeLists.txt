@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.14)
 
 # Set the project name
 project(Server VERSION 1.0)
@@ -10,5 +10,5 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 # Create the executable from the source files
 add_library(${PROJECT_NAME} ${SOURCES})
 
-
+add_subdirectory(test)
 
