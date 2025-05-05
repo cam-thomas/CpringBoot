@@ -3,18 +3,18 @@ cmake_minimum_required(VERSION 3.14)
 # Set the project name
 project(test_Server VERSION 1.0)
 
-#GTest
-
-# Add all source files in the current directory to the executable
-file(GLOB SOURCES "*.cpp")
-
-
+# GTest
 enable_testing()
 
+# Add the test executable
 add_executable(
   test_Server
   test_Server.cpp
+  ../HandlerManager.cpp
+  ../Server.cpp
 )
+
+# Link GTest and other required libraries
 target_link_libraries(
   test_Server
   GTest::gtest_main

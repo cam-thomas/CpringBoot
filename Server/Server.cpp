@@ -67,7 +67,7 @@ void Server::Serve() {
 			continue;
 		}
 
-		std::thread connection_thread(&Server::HandleConnection, this, connectionfd);
-		connection_thread.detach();
+		// std::thread connection_thread(&Server::HandleConnection, this, connectionfd);
+		// connection_thread.detach();
 	}
 }
